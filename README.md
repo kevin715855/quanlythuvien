@@ -197,8 +197,6 @@ docker-compose down -v
 ---
 
 ## ⚠️ Lưu ý quan trọng
-
-- **Frontend chưa có code** → không chạy được service `frontend` trong docker-compose
 - Chỉ chạy: `docker-compose up -d postgres pgadmin backend`
 - **Docker Desktop phải đang chạy** trước khi dùng lệnh docker
 - `docker-compose down -v` sẽ **xóa toàn bộ data DB** — cẩn thận!
