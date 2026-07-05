@@ -27,10 +27,9 @@ JWT_ACCESS_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=7d
 ```
 
-### Bước 2: Khởi động Docker (chỉ backend + DB, frontend chưa có code)
+### Bước 2: Khởi động Docker
 ```powershell
-cd c:\Users\Admin\Desktop\Document\AgenticCode\quanlythuvien
-docker-compose up -d postgres pgadmin backend
+docker compose up -d
 ```
 
 ### Bước 3: Kiểm tra logs backend
@@ -38,6 +37,8 @@ docker-compose up -d postgres pgadmin backend
 docker logs dgm_backend --tail 30
 ```
 > Chờ đến khi thấy `Nest application successfully started`
+
+Frontend dùng đường dẫn tương đối `/api`. Khi chạy local, Vite proxy sang `http://localhost:3000`; trong Docker Compose, proxy trỏ tới service `backend` trong network nội bộ.
 
 ---
 
@@ -48,7 +49,7 @@ docker logs dgm_backend --tail 30
 | Backend API | http://localhost:3000/api      |                      |
 | Swagger UI  | http://localhost:3000/api/docs | Dùng để test API     |
 | pgAdmin     | http://localhost:5050          | Quản lý database     |
-| Frontend    | http://localhost:5173          | ❌ Chưa có code      |
+| Frontend    | http://localhost:5173          | Giao diện web        |
 
 ---
 
@@ -82,7 +83,7 @@ VALUES (
   gen_random_uuid(),
   'admin',
   '<HASH_BCRYPT_12_ROUNDS>',
-  'ADMIN',
+  'admin',
   true,
   NOW(),
   NOW()

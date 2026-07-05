@@ -10,6 +10,7 @@ npm run dev
 ```
 
 Vite serves `http://localhost:5173` and proxies `/api` to `http://localhost:3000`. Start the NestJS backend separately.
+If you run the frontend inside Docker Compose, the proxy target comes from `VITE_API_PROXY_TARGET=http://backend:3000` so `/api` reaches the backend container.
 
 ## Verification
 
@@ -23,4 +24,4 @@ The test suite includes application behavior, HTTP/auth refresh, React workflows
 
 ## Docker
 
-The existing multi-stage Dockerfile runs `npm ci` and `npm run build`, then serves the generated files through Nginx. Nginx forwards `/api` to the `backend:3000` Compose service.
+The existing multi-stage Dockerfile runs `npm ci` and `npm run build`, then serves the generated files through Nginx. In Compose, the frontend dev server and the Nginx container both forward `/api` to the backend service.
