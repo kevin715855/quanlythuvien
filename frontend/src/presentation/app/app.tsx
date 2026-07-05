@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import type { AppServices } from "../../application/services";
 import { AppShell } from "../layouts/app-shell";
+import { BillingPage } from "../pages/billing-page";
 import { DashboardPage } from "../pages/dashboard-page";
 import { CirculationPage } from "../pages/circulation-page";
 import { CatalogPage } from "../pages/catalog-page";
@@ -25,6 +26,7 @@ export function App({ services }: { services: AppServices }) {
                 <Route path="/readers" element={<ReadersPage />} />
                 <Route path="/circulation" element={<CirculationPage />} />
                 <Route path="/reservations" element={<ReservationsPage />} />
+                <Route path="/billing" element={<BillingPage />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
