@@ -17,10 +17,14 @@ import { BranchOrmEntity } from "./infrastructure/persistence/typeorm/entities/b
 import { ShelfLocationOrmEntity } from "./infrastructure/persistence/typeorm/entities/shelf-location.orm-entity";
 import { CatalogManagementTypeOrmUnitOfWork } from "./infrastructure/persistence/typeorm/catalog-management-unit-of-work";
 import { CatalogManagementController } from "./presentation/http/catalog-management.controller";
+import { CatalogQueryPort } from "./application/ports/catalog-query.port";
+import { ListBranchesUseCase, ListCopiesUseCase, ListShelvesUseCase } from "./application/use-cases/catalog-query.use-cases";
+import { TypeOrmCatalogQueryAdapter } from "./infrastructure/persistence/typeorm/typeorm-catalog-query.adapter";
 
 export const BOOK_TITLE_REPOSITORY = Symbol("BOOK_TITLE_REPOSITORY");
 export const CATALOG_MANAGEMENT_UOW = Symbol("CATALOG_MANAGEMENT_UOW");
 export const CATALOG_IDENTIFIER_GENERATOR = Symbol("CATALOG_IDENTIFIER_GENERATOR");
+export const CATALOG_QUERY = Symbol("CATALOG_QUERY");
 
 @Module({
   imports: [TypeOrmModule.forFeature([BookTitleOrmEntity, BookCopyOrmEntity, BranchOrmEntity, ShelfLocationOrmEntity])],
@@ -36,6 +40,7 @@ export const CATALOG_IDENTIFIER_GENERATOR = Symbol("CATALOG_IDENTIFIER_GENERATOR
       useFactory: (repository: BookTitleRepository) => new SearchCatalogUseCase(repository),
     },
     { provide: CATALOG_MANAGEMENT_UOW, useClass: CatalogManagementTypeOrmUnitOfWork },
+    { provide: CATALOG_QUERY, useClass: TypeOrmCatalogQueryAdapter },
     { provide: CATALOG_IDENTIFIER_GENERATOR, useValue: { next: () => randomUUID() } satisfies CatalogIdentifierGenerator },
     {
       provide: CreateBookTitleUseCase, inject: [CATALOG_MANAGEMENT_UOW, CATALOG_IDENTIFIER_GENERATOR],
@@ -61,6 +66,9 @@ export const CATALOG_IDENTIFIER_GENERATOR = Symbol("CATALOG_IDENTIFIER_GENERATOR
       provide: UpdateBookCopyUseCase, inject: [CATALOG_MANAGEMENT_UOW],
       useFactory: (uow: CatalogManagementUnitOfWork) => new UpdateBookCopyUseCase(uow),
     },
+    { provide: ListBranchesUseCase, inject: [CATALOG_QUERY], useFactory: (query: CatalogQueryPort) => new ListBranchesUseCase(query) },
+    { provide: ListShelvesUseCase, inject: [CATALOG_QUERY], useFactory: (query: CatalogQueryPort) => new ListShelvesUseCase(query) },
+    { provide: ListCopiesUseCase, inject: [CATALOG_QUERY], useFactory: (query: CatalogQueryPort) => new ListCopiesUseCase(query) },
   ],
   exports: [SearchCatalogUseCase],
 })

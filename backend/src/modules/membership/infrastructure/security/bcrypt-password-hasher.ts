@@ -6,6 +6,7 @@ export const BCRYPT_ROUNDS = Symbol("BCRYPT_ROUNDS");
 export interface PasswordHasher {
   hash(password: string): Promise<string>;
 }
+export const BCRYPT_ROUNDS = Symbol("BCRYPT_ROUNDS");
 
 @Injectable()
 export class BcryptPasswordHasher implements PasswordHasher {
