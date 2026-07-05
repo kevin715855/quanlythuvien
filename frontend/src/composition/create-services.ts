@@ -1,4 +1,5 @@
 import type { AppServices } from "../application/services";
+import { CreateStaffUseCase, QueryAuditLogsUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "../application/use-cases/administration.use-cases";
 import { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "../application/use-cases/auth.use-cases";
 import { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "../application/use-cases/billing.use-cases";
 import { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "../application/use-cases/catalog.use-cases";
@@ -17,6 +18,7 @@ import {
   UpdateReaderUseCase,
 } from "../application/use-cases/library.use-cases";
 import { HttpAuthGateway } from "../infrastructure/adapters/http-auth.gateway";
+import { HttpAdministrationGateway } from "../infrastructure/adapters/http-administration.gateway";
 import { HttpBillingGateway } from "../infrastructure/adapters/http-billing.gateway";
 import { HttpCatalogGateway } from "../infrastructure/adapters/http-catalog.gateway";
 import { HttpCirculationGateway } from "../infrastructure/adapters/http-circulation.gateway";
@@ -36,6 +38,7 @@ export function createServices(baseUrl = "/api"): AppServices {
   const reservations = new HttpReservationsGateway(client);
   const catalog = new HttpCatalogGateway(client);
   const billing = new HttpBillingGateway(client);
+  const administration = new HttpAdministrationGateway(client);
 
   return {
     sessions,
@@ -68,5 +71,9 @@ export function createServices(baseUrl = "/api"): AppServices {
     listReaderPayments: new ListReaderPaymentsUseCase(billing),
     createPayment: new CreatePaymentUseCase(billing),
     simulatePayment: new SimulatePaymentUseCase(billing),
+    createStaff: new CreateStaffUseCase(administration),
+    upsertRole: new UpsertRoleUseCase(administration),
+    updatePolicy: new UpdatePolicyUseCase(administration),
+    queryAuditLogs: new QueryAuditLogsUseCase(administration),
   };
 }

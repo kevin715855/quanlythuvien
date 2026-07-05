@@ -1,4 +1,5 @@
 import type { SessionStore } from "./ports/auth.gateway";
+import type { CreateStaffUseCase, QueryAuditLogsUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "./use-cases/administration.use-cases";
 import type { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "./use-cases/auth.use-cases";
 import type { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "./use-cases/billing.use-cases";
 import type { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "./use-cases/catalog.use-cases";
@@ -48,4 +49,8 @@ export interface AppServices {
   listReaderPayments: Pick<ListReaderPaymentsUseCase, "execute">;
   createPayment: Pick<CreatePaymentUseCase, "execute">;
   simulatePayment: Pick<SimulatePaymentUseCase, "execute">;
+  createStaff: Pick<CreateStaffUseCase, "execute">;
+  upsertRole: Pick<UpsertRoleUseCase, "execute">;
+  updatePolicy: Pick<UpdatePolicyUseCase, "execute">;
+  queryAuditLogs: Pick<QueryAuditLogsUseCase, "execute">;
 }

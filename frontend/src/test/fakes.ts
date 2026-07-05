@@ -33,5 +33,9 @@ export function createTestServices(): AppServices {
     listReaderPayments: { execute: vi.fn().mockResolvedValue([]) },
     createPayment: { execute: vi.fn() },
     simulatePayment: { execute: vi.fn() },
+    createStaff: { execute: vi.fn() },
+    upsertRole: { execute: vi.fn() },
+    updatePolicy: { execute: vi.fn() },
+    queryAuditLogs: { execute: vi.fn().mockResolvedValue({ items: [], total: 0, page: 1, limit: 20 }) },
   };
 }
