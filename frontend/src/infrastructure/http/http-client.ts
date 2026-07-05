@@ -39,6 +39,10 @@ export class HttpClient {
     return this.request<T>(path, { method: "PATCH", body: JSON.stringify(body) }, true);
   }
 
+  put<T>(path: string, body: unknown): Promise<T> {
+    return this.request<T>(path, { method: "PUT", body: JSON.stringify(body) }, true);
+  }
+
   private async request<T>(
     path: string,
     init: RequestInit,

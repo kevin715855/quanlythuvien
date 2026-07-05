@@ -61,6 +61,16 @@ describe("HttpClient", () => {
     expect(error).toMatchObject({ status: 400, messages: ["email must be an email"] });
   });
 
+  it("sends PUT requests with a JSON body", async () => {
+    fetcher.mockResolvedValue(jsonResponse(200, { success: true, data: { code: "staff" } }));
+    const client = new HttpClient("/api", store, fetcher);
+
+    await client.put("/admin/roles/staff", { permissions: ["reports.read"] });
+    expect(fetcher).toHaveBeenCalledWith("/api/admin/roles/staff", expect.objectContaining({
+      method: "PUT", body: JSON.stringify({ permissions: ["reports.read"] }),
+    }));
+  });
+
   it("retains response metadata when requested", async () => {
     fetcher.mockResolvedValue(jsonResponse(200, {
       success: true,
