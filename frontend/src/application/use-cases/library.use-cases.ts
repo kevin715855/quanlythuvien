@@ -110,6 +110,21 @@ export class ListReaderLoansUseCase {
   }
 }
 
+export class RenewLoanUseCase {
+  constructor(private readonly circulation: CirculationGateway) {}
+  execute(loanId: string, itemIds?: string[]) {
+    return this.circulation.renewLoan(requireUuid(loanId, "ID khoản mượn phải là UUID hợp lệ"), itemIds?.map((id) => requireUuid(id, "ID mục mượn phải là UUID hợp lệ")));
+  }
+}
+
+export class PlaceReservationUseCase {
+  constructor(private readonly reservations: ReservationsGateway) {}
+  execute(input: AllocateReservationInput) {
+    if (!isUuid(input.bookTitleId) || !isUuid(input.branchId)) throw new ValidationError("ID đầu sách và chi nhánh phải là UUID hợp lệ");
+    return this.reservations.place({ bookTitleId: input.bookTitleId.trim(), branchId: input.branchId.trim() });
+  }
+}
+
 export class ListReservationsUseCase {
   constructor(private readonly reservations: ReservationsGateway) {}
   async execute(readerId: string): Promise<Reservation[]> {

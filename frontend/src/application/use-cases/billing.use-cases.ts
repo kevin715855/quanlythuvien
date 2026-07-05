@@ -7,6 +7,11 @@ function required(value: string, message: string): string {
   return normalized;
 }
 
+export class AssessFineUseCase {
+  constructor(private readonly gateway: BillingGateway) {}
+  execute(loanItemId: string) { return this.gateway.assessFine(required(loanItemId, "ID mục mượn là bắt buộc")); }
+}
+
 export class ListReaderFinesUseCase {
   constructor(private readonly gateway: BillingGateway) {}
   async execute(readerId: string) {

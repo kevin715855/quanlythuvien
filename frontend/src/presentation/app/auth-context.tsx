@@ -3,10 +3,12 @@ import type { User } from "../../domain/auth";
 import { useServices } from "./services-context";
 
 type AuthStatus = "restoring" | "authenticated" | "anonymous";
+const CONSOLE_ROLES = new Set<string>(["admin", "staff", "reader"]);
+
 interface AuthState {
   user: User | null;
   status: AuthStatus;
-  login(username: string, password: string): Promise<void>;
+  login(username: string, password: string): Promise<User>;
   logout(): Promise<void>;
 }
 
@@ -17,13 +19,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<AuthStatus>("restoring");
 
+  function ensureConsoleAccess(current: User | null): User | null {
+    if (!current) return null;
+    if (CONSOLE_ROLES.has(current.role)) return current;
+    services.sessions.clear();
+    return null;
+  }
+
   useEffect(() => {
     let active = true;
     services.restoreSession.execute()
       .then((restored) => {
         if (!active) return;
-        setUser(restored);
-        setStatus(restored ? "authenticated" : "anonymous");
+        const allowed = ensureConsoleAccess(restored);
+        setUser(allowed);
+        setStatus(allowed ? "authenticated" : "anonymous");
       })
       .catch(() => {
         if (!active) return;
@@ -47,8 +57,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     status,
     async login(username, password) {
       const current = await services.login.execute({ username, password });
-      setUser(current);
+      const allowed = ensureConsoleAccess(current);
+      if (!allowed) {
+        throw new Error("Tài khoản này không có quyền truy cập console nhân viên");
+      }
+      setUser(allowed);
       setStatus("authenticated");
+      return allowed;
     },
     async logout() {
       try {

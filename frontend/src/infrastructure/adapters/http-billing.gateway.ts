@@ -4,6 +4,7 @@ import type { HttpClient } from "../http/http-client";
 
 export class HttpBillingGateway implements BillingGateway {
   constructor(private readonly client: HttpClient) {}
+  assessFine(loanItemId: string) { return this.client.post<Fine[]>("/fines/calculate", { loanItemId }); }
 
   listFines(readerId: string) {
     return this.client.get<Fine[]>(`/fines/readers/${encodeURIComponent(readerId)}`);

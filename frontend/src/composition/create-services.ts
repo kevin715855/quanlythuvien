@@ -1,7 +1,7 @@
 import type { AppServices } from "../application/services";
-import { CreateStaffUseCase, QueryAuditLogsUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "../application/use-cases/administration.use-cases";
+import { CreateStaffUseCase, QueryAuditLogsUseCase, SetStaffStatusUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "../application/use-cases/administration.use-cases";
 import { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "../application/use-cases/auth.use-cases";
-import { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "../application/use-cases/billing.use-cases";
+import { AssessFineUseCase, CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "../application/use-cases/billing.use-cases";
 import { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "../application/use-cases/catalog.use-cases";
 import {
   AllocateReservationUseCase,
@@ -14,9 +14,12 @@ import {
   ListReservationsUseCase,
   RegisterReaderUseCase,
   RenewReaderCardUseCase,
+  RenewLoanUseCase,
+  PlaceReservationUseCase,
   ReturnBooksUseCase,
   UpdateReaderUseCase,
 } from "../application/use-cases/library.use-cases";
+import { CompleteInventoryUseCase, CreateBackupUseCase, CreateInventoryUseCase, ListBackupsUseCase, RestoreBackupUseCase, ScanInventoryUseCase, UpdateCopyConditionUseCase } from "../application/use-cases/operations.use-cases";
 import { HttpAuthGateway } from "../infrastructure/adapters/http-auth.gateway";
 import { HttpAdministrationGateway } from "../infrastructure/adapters/http-administration.gateway";
 import { HttpBillingGateway } from "../infrastructure/adapters/http-billing.gateway";
@@ -25,6 +28,7 @@ import { HttpCirculationGateway } from "../infrastructure/adapters/http-circulat
 import { HttpReadersGateway } from "../infrastructure/adapters/http-readers.gateway";
 import { HttpReportingGateway } from "../infrastructure/adapters/http-reporting.gateway";
 import { HttpReservationsGateway } from "../infrastructure/adapters/http-reservations.gateway";
+import { HttpOperationsGateway } from "../infrastructure/adapters/http-operations.gateway";
 import { BrowserSessionStore } from "../infrastructure/auth/browser-session-store";
 import { HttpClient } from "../infrastructure/http/http-client";
 
@@ -39,6 +43,7 @@ export function createServices(baseUrl = "/api"): AppServices {
   const catalog = new HttpCatalogGateway(client);
   const billing = new HttpBillingGateway(client);
   const administration = new HttpAdministrationGateway(client);
+  const operations = new HttpOperationsGateway(client);
 
   return {
     sessions,
@@ -71,9 +76,20 @@ export function createServices(baseUrl = "/api"): AppServices {
     listReaderPayments: new ListReaderPaymentsUseCase(billing),
     createPayment: new CreatePaymentUseCase(billing),
     simulatePayment: new SimulatePaymentUseCase(billing),
+    assessFine: new AssessFineUseCase(billing),
+    renewLoan: new RenewLoanUseCase(circulation),
+    placeReservation: new PlaceReservationUseCase(reservations),
     createStaff: new CreateStaffUseCase(administration),
     upsertRole: new UpsertRoleUseCase(administration),
     updatePolicy: new UpdatePolicyUseCase(administration),
     queryAuditLogs: new QueryAuditLogsUseCase(administration),
+    setStaffStatus: new SetStaffStatusUseCase(administration),
+    createInventory: new CreateInventoryUseCase(operations),
+    scanInventory: new ScanInventoryUseCase(operations),
+    completeInventory: new CompleteInventoryUseCase(operations),
+    updateCopyCondition: new UpdateCopyConditionUseCase(operations),
+    listBackups: new ListBackupsUseCase(operations),
+    createBackup: new CreateBackupUseCase(operations),
+    restoreBackup: new RestoreBackupUseCase(operations),
   };
 }

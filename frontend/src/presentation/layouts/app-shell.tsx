@@ -8,7 +8,10 @@ const links = [
   { to: "/circulation", label: "Mượn / trả", number: "04", roles: ["staff"] },
   { to: "/reservations", label: "Đặt chỗ", number: "05", roles: ["staff"] },
   { to: "/billing", label: "Phí phạt", number: "06", roles: ["staff"] },
-  { to: "/admin", label: "Quản trị", number: "07", roles: ["admin"] },
+  { to: "/inventory", label: "Kiểm kê", number: "07", roles: ["staff"] },
+  { to: "/admin", label: "Quản trị", number: "08", roles: ["admin"] },
+  { to: "/backups", label: "Sao lưu", number: "09", roles: ["admin"] },
+  { to: "/reader", label: "Tài khoản", number: "01", roles: ["reader"] },
 ] as const;
 
 export function AppShell() {

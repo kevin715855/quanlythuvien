@@ -12,6 +12,10 @@ export class CreateStaffUseCase {
     return this.gateway.createStaff({ username, password: input.password, role });
   }
 }
+export class SetStaffStatusUseCase {
+  constructor(private readonly gateway: AdministrationGateway) {}
+  execute(id: string, isActive: boolean) { return this.gateway.setStaffStatus(required(id, "ID tài khoản là bắt buộc"), isActive); }
+}
 
 export class UpsertRoleUseCase {
   constructor(private readonly gateway: AdministrationGateway) {}

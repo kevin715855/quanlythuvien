@@ -4,6 +4,7 @@ import type { HttpClient } from "../http/http-client";
 
 export class HttpAdministrationGateway implements AdministrationGateway {
   constructor(private readonly client: HttpClient) {}
+  setStaffStatus(id: string, isActive: boolean) { return this.client.patch<{ id: string; isActive: boolean }>(`/admin/staff/${encodeURIComponent(id)}/status`, { isActive }); }
   createStaff(input: { username: string; password: string; role: string }) { return this.client.post<StaffAccount>("/admin/staff", input); }
   upsertRole(code: string, input: { name?: string; permissions: string[] }) { return this.client.put<RoleDefinition>(`/admin/roles/${encodeURIComponent(code)}`, input); }
   updatePolicy(group: string, values: Record<string, number>) { return this.client.put<PolicyResult>(`/admin/policies/${encodeURIComponent(group)}`, { values }); }

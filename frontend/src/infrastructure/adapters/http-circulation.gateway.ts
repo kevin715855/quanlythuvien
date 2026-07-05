@@ -11,4 +11,7 @@ export class HttpCirculationGateway implements CirculationGateway {
   listReaderLoans(readerId: string) {
     return this.client.get<Loan[]>(`/circulation/readers/${encodeURIComponent(readerId)}/loans`);
   }
+  renewLoan(loanId: string, itemIds?: string[]) {
+    return this.client.post<Loan>(`/circulation/loans/${encodeURIComponent(loanId)}/renew`, { ...(itemIds?.length ? { itemIds } : {}) });
+  }
 }

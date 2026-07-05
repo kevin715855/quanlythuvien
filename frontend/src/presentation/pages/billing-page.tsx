@@ -20,6 +20,7 @@ export function BillingPage() {
   const [selectedFineIds, setSelectedFineIds] = useState<string[]>([]);
   const [method, setMethod] = useState<PaymentMethod>("CASH");
   const [pendingPayment, setPendingPayment] = useState<PaymentTransaction | null>(null);
+  const [loanItemId, setLoanItemId] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -71,6 +72,7 @@ export function BillingPage() {
       : "Thanh toán online thất bại; các khoản phạt đã được mở lại");
     await load(loadedReaderId);
   }
+  async function assess(event: FormEvent) { event.preventDefault(); const result = await execute(() => services.assessFine.execute(loanItemId)); if (result) { setMessage(`Đã tính ${result.length} khoản phạt`); setLoanItemId(""); } }
 
   return (
     <section>
@@ -80,6 +82,7 @@ export function BillingPage() {
         <FormField label="ID độc giả"><input value={readerId} onChange={(event) => setReaderId(event.target.value)} /></FormField>
         <button disabled={busy}>Tra cứu phí phạt</button>
       </form>
+      <form className="panel inline-form" onSubmit={assess}><FormField label="ID mục mượn cần tính phạt"><input value={loanItemId} onChange={e=>setLoanItemId(e.target.value)}/></FormField><button disabled={busy}>Tính phí phạt</button></form>
 
       {loadedReaderId && <>
         <div className="tabs">

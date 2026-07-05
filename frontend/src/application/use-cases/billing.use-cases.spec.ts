@@ -7,6 +7,7 @@ describe("Billing use cases", () => {
 
   beforeEach(() => {
     gateway = {
+      assessFine: vi.fn(),
       listFines: vi.fn().mockResolvedValue([]),
       listPayments: vi.fn().mockResolvedValue([]),
       createPayment: vi.fn(),

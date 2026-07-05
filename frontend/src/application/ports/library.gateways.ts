@@ -19,9 +19,11 @@ export interface CirculationGateway {
   borrow(input: BorrowBooksInput): Promise<Loan>;
   returnBooks(returns: ReturnLine[]): Promise<ReturnResult[]>;
   listReaderLoans(readerId: string): Promise<Loan[]>;
+  renewLoan(loanId: string, itemIds?: string[]): Promise<Loan>;
 }
 
 export interface ReservationsGateway {
+  place(input: AllocateReservationInput): Promise<Reservation>;
   listByReader(readerId: string): Promise<Reservation[]>;
   cancel(reservationId: string, reason: string): Promise<Reservation>;
   allocate(input: AllocateReservationInput): Promise<Reservation | null>;

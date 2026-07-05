@@ -26,8 +26,8 @@ describe("library application use cases", () => {
     readers = {
       register: vi.fn(), get: vi.fn(), update: vi.fn(), renew: vi.fn(), changeCardStatus: vi.fn(),
     };
-    circulation = { borrow: vi.fn(), returnBooks: vi.fn(), listReaderLoans: vi.fn() };
-    reservations = { listByReader: vi.fn(), cancel: vi.fn(), allocate: vi.fn() };
+    circulation = { borrow: vi.fn(), returnBooks: vi.fn(), listReaderLoans: vi.fn(), renewLoan: vi.fn() };
+    reservations = { place: vi.fn(), listByReader: vi.fn(), cancel: vi.fn(), allocate: vi.fn() };
   });
 
   it("rejects an invalid operational report date range", async () => {

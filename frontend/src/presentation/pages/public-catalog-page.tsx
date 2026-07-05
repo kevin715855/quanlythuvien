@@ -1,0 +1,7 @@
+import { type FormEvent, useState } from "react";
+import type { CatalogSearchResult } from "../../domain/catalog";
+import { useServices } from "../app/services-context";
+import { FormField } from "../components/form-field";
+import { Toast } from "../components/toast";
+
+export function PublicCatalogPage(){const s=useServices();const[q,setQ]=useState("");const[result,setResult]=useState<CatalogSearchResult|null>(null);const[error,setError]=useState("");async function search(e:FormEvent){e.preventDefault();setError("");try{setResult(await s.searchCatalog.execute({query:q,page:1,limit:20}));}catch(e){setError((e as Error).message);}}return <main className="workspace"><div className="page-heading"><div><p className="eyebrow">DGM Library</p><h1>Tra cứu mục lục</h1></div><a href="/login">Đăng nhập</a></div>{error&&<Toast message={error} tone="error"/>}<form className="panel inline-form" onSubmit={search}><FormField label="Tên sách, tác giả hoặc ISBN"><input value={q} onChange={e=>setQ(e.target.value)}/></FormField><button>Tìm kiếm</button></form><div className="catalog-results">{result?.items.map(x=><article className="catalog-card" key={x.id}><div><h2>{x.title}</h2><p>{x.authors.join(", ")||"Chưa rõ tác giả"}</p><small>{x.isbn??"Không có ISBN"}</small></div><div>{x.availability.map(a=><p key={a.branchId}>{a.branchId}: {a.availableCopies} bản sẵn sàng</p>)}</div></article>)}</div>{result&&result.items.length===0&&<p className="empty-state">Không tìm thấy tài liệu.</p>}</main>}

@@ -5,7 +5,7 @@ import { CreateStaffUseCase, QueryAuditLogsUseCase, UpdatePolicyUseCase, UpsertR
 describe("Administration use cases", () => {
   let gateway: AdministrationGateway;
   beforeEach(() => {
-    gateway = { createStaff: vi.fn(), upsertRole: vi.fn(), updatePolicy: vi.fn(), queryAuditLogs: vi.fn() };
+    gateway = { createStaff: vi.fn(), setStaffStatus: vi.fn(), upsertRole: vi.fn(), updatePolicy: vi.fn(), queryAuditLogs: vi.fn() };
   });
 
   it("normalizes staff account input", async () => {

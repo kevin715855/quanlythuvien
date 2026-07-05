@@ -1,7 +1,7 @@
 import type { SessionStore } from "./ports/auth.gateway";
-import type { CreateStaffUseCase, QueryAuditLogsUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "./use-cases/administration.use-cases";
+import type { CreateStaffUseCase, QueryAuditLogsUseCase, SetStaffStatusUseCase, UpdatePolicyUseCase, UpsertRoleUseCase } from "./use-cases/administration.use-cases";
 import type { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "./use-cases/auth.use-cases";
-import type { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "./use-cases/billing.use-cases";
+import type { AssessFineUseCase, CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "./use-cases/billing.use-cases";
 import type { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "./use-cases/catalog.use-cases";
 import type {
   AllocateReservationUseCase,
@@ -14,9 +14,12 @@ import type {
   ListReservationsUseCase,
   RegisterReaderUseCase,
   RenewReaderCardUseCase,
+  RenewLoanUseCase,
+  PlaceReservationUseCase,
   ReturnBooksUseCase,
   UpdateReaderUseCase,
 } from "./use-cases/library.use-cases";
+import type { CompleteInventoryUseCase, CreateBackupUseCase, CreateInventoryUseCase, ListBackupsUseCase, RestoreBackupUseCase, ScanInventoryUseCase, UpdateCopyConditionUseCase } from "./use-cases/operations.use-cases";
 
 export interface AppServices {
   sessions: SessionStore;
@@ -49,8 +52,19 @@ export interface AppServices {
   listReaderPayments: Pick<ListReaderPaymentsUseCase, "execute">;
   createPayment: Pick<CreatePaymentUseCase, "execute">;
   simulatePayment: Pick<SimulatePaymentUseCase, "execute">;
+  assessFine: Pick<AssessFineUseCase, "execute">;
+  renewLoan: Pick<RenewLoanUseCase, "execute">;
+  placeReservation: Pick<PlaceReservationUseCase, "execute">;
   createStaff: Pick<CreateStaffUseCase, "execute">;
   upsertRole: Pick<UpsertRoleUseCase, "execute">;
   updatePolicy: Pick<UpdatePolicyUseCase, "execute">;
   queryAuditLogs: Pick<QueryAuditLogsUseCase, "execute">;
+  setStaffStatus: Pick<SetStaffStatusUseCase, "execute">;
+  createInventory: Pick<CreateInventoryUseCase, "execute">;
+  scanInventory: Pick<ScanInventoryUseCase, "execute">;
+  completeInventory: Pick<CompleteInventoryUseCase, "execute">;
+  updateCopyCondition: Pick<UpdateCopyConditionUseCase, "execute">;
+  listBackups: Pick<ListBackupsUseCase, "execute">;
+  createBackup: Pick<CreateBackupUseCase, "execute">;
+  restoreBackup: Pick<RestoreBackupUseCase, "execute">;
 }

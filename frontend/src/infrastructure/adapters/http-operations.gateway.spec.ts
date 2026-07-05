@@ -1,0 +1,4 @@
+import { describe,expect,it,vi } from "vitest";
+import type { HttpClient } from "../http/http-client";
+import { HttpOperationsGateway } from "./http-operations.gateway";
+describe("HttpOperationsGateway",()=>{it("maps inventory and backup endpoints",async()=>{const c={get:vi.fn().mockResolvedValue([]),post:vi.fn().mockResolvedValue({})} as unknown as HttpClient;const g=new HttpOperationsGateway(c);await g.createInventory("branch-1","shelf-1");await g.scanInventory("session/1","COPY");await g.listBackups();await g.restoreBackup("backup/1");expect(c.post).toHaveBeenCalledWith("/inventory/sessions",{branchId:"branch-1",shelfId:"shelf-1"});expect(c.post).toHaveBeenCalledWith("/inventory/sessions/session%2F1/scan",{barcode:"COPY"});expect(c.get).toHaveBeenCalledWith("/admin/backups");expect(c.post).toHaveBeenCalledWith("/admin/backups/backup%2F1/restore",{confirmation:"RESTORE"});});});

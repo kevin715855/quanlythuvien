@@ -1,6 +1,7 @@
 import type { CreatePaymentCommand, Fine, PaymentResult, PaymentTransaction } from "../../domain/billing";
 
 export interface BillingGateway {
+  assessFine(loanItemId: string): Promise<Fine[]>;
   listFines(readerId: string): Promise<Fine[]>;
   listPayments(readerId: string): Promise<PaymentTransaction[]>;
   createPayment(command: CreatePaymentCommand): Promise<PaymentTransaction>;

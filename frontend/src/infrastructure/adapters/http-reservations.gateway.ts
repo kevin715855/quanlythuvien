@@ -4,6 +4,7 @@ import type { HttpClient } from "../http/http-client";
 
 export class HttpReservationsGateway implements ReservationsGateway {
   constructor(private readonly client: HttpClient) {}
+  place(input: AllocateReservationInput) { return this.client.post<Reservation>("/reservations", input); }
   listByReader(readerId: string) {
     return this.client.get<Reservation[]>(`/reservations/readers/${encodeURIComponent(readerId)}`);
   }
