@@ -26,6 +26,7 @@ describe("AppShell", () => {
     expect(screen.getByRole("link", { name: "Độc giả" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mượn / trả" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Đặt chỗ" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Phí phạt" })).toHaveAttribute("href", "/billing");
     expect(screen.getByText("staff · STAFF")).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Đăng xuất" }));
     expect(services.logout.execute).toHaveBeenCalledOnce();

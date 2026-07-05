@@ -7,6 +7,7 @@ const links = [
   ["/readers", "Độc giả", "03"],
   ["/circulation", "Mượn / trả", "04"],
   ["/reservations", "Đặt chỗ", "05"],
+  ["/billing", "Phí phạt", "06"],
 ] as const;
 
 export function AppShell() {
