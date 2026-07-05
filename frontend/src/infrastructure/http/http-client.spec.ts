@@ -4,7 +4,7 @@ import { BrowserSessionStore } from "../auth/browser-session-store";
 import { ApiError } from "./api-error";
 import { HttpClient } from "./http-client";
 
-const user = { id: "user-1", readerId: null, username: "staff", role: "STAFF" as const };
+const user = { id: "user-1", readerId: null, username: "staff", role: "staff" as const };
 const session: Session = {
   accessToken: "old-access",
   refreshToken: "old-refresh",

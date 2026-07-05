@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthGateway, SessionStore } from "../ports/auth.gateway";
 import { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "./auth.use-cases";
 
-const user = { id: "user-1", readerId: null, username: "staff", role: "STAFF" as const };
+const user = { id: "user-1", readerId: null, username: "staff", role: "staff" as const };
 const session = {
   accessToken: "access",
   refreshToken: "refresh",

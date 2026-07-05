@@ -8,7 +8,7 @@ import { AuthProvider } from "../app/auth-context";
 import { ServicesProvider } from "../app/services-context";
 import { LoginPage } from "./login-page";
 
-const staff: User = { id: "user-1", readerId: null, username: "staff", role: "STAFF" };
+const staff: User = { id: "user-1", readerId: null, username: "staff", role: "staff" };
 
 function renderLogin(services = createTestServices()) {
   render(
